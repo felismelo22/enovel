@@ -27,4 +27,18 @@
 			</li>
 		</ul>
 	</li>
+	<li>
+		<a href="javascript:;" data-toggle="collapse" data-target="#novel"><i class="fa fa-fw fa-book"></i> Novel <i class="fa fa-fw fa-caret-down"></i></a>
+		<ul id="novel" class="collapse">
+			<li>
+				<a href="<?php echo base_url('admin/novel_novel') ?>">Novel</a>
+			</li>
+			<li>
+				<a href="<?php echo base_url('admin/novel_edit') ?>">Add Chapter</a>
+			</li>
+			<li>
+				<a href="<?php echo base_url('admin/novel_list') ?>">Chapter List</a>
+			</li>
+		</ul>
+	</li>
 </ul>

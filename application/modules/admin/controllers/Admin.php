@@ -10,6 +10,7 @@ class Admin extends CI_Controller
     $this->load->helper('email');
     $this->load->model('admin_model');
     $this->load->model('content_model');
+    $this->load->model('novel_model');
 		$this->load->library('session');
 		$this->load->library('pagination');
   }
@@ -307,5 +308,137 @@ class Admin extends CI_Controller
     }
     $data['data'] = $this->content_model->get_content_list();
     $this->load->view('admin/index',$data);
+  }
+
+  /*novel*/
+  public function novel_novel($id = 0)
+  {
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('title', 'Title', 'required');
+    if ($this->form_validation->run() === FALSE)
+    {
+      $data['msg']       = '';
+      $data['alert']     = '';
+      // pr($this->db->last_query());die();
+    }else{
+      $title  = $this->input->post('title');
+      if($id > 0)
+      {
+        $title_exist    = $this->novel_model->get_novel_all('title',' WHERE title = "'.$title.'" AND id != '.$id.' LIMIT 1');
+        $data['msg']    = 'Data Updated Successfully';
+        $data['alert']  = 'success';
+        if(empty($title_exist))
+        {
+          $this->novel_model->set_novel($id);
+        }else{
+          $data['msg']    = 'Title Exist';
+          $data['alert']  = 'danger';
+        }
+      }else{
+        $title_exist    = $this->novel_model->get_novel_all('title',' WHERE title = "'.$title.'" LIMIT 1');
+
+        $data['msg']   = 'Data Saved Successfully';
+        $data['alert'] = 'success';
+
+        if(empty($title_exist))
+        {
+          $this->novel_model->set_novel();
+        }else{
+          $data['msg']    = 'Title Exist';
+          $data['alert']  = 'danger';
+        }
+      }
+
+
+    }
+
+    $this->load->helper('date');
+    if(!empty($this->input->post('publish_list')))
+    {
+      $this->content_model->publish_data('novel', $this->input->post('pub_nov'));
+      $data['msg']   = 'Novel Updated Successfully';
+      $data['alert'] = 'success';
+    }
+    if(!empty($this->input->post('delete')))
+    {
+      $this->content_model->del_data('novel', $this->input->post('del_nov'));
+      $data['msg']   = 'Novel Deleted Successfully';
+      $data['alert'] = 'success';
+      if(empty($this->input->post('del_nov')))
+      {
+        $data['msg']   = 'No Data selected to delete';
+        $data['alert'] = 'success';
+      }
+    }
+
+    $data['data_list'] = $this->novel_model->get_novel_list();
+    $data['data']      = $this->novel_model->get_novel(@intval($id));
+
+    $this->load->view('admin/index', $data);
+  }
+  public function novel_list()
+  {
+    $this->load->helper('date');
+    if(!empty($this->input->post('publish')))
+    {
+      $this->content_model->publish_data('novel_chapter', $this->input->post('pub_chapter'));
+      $data['msg']   = 'Content Updated Successfully';
+      $data['alert'] = 'success';
+    }
+    if(!empty($this->input->post('delete')))
+    {
+      $this->content_model->del_data('novel_chapter', $this->input->post('del_chapter'));
+      $data['msg']   = 'Content Deleted Successfully';
+      $data['alert'] = 'success';
+      if(empty($this->input->post('del_chapter')))
+      {
+        $data['msg']   = 'No Data selected to delete';
+        $data['alert'] = 'success';
+      }
+    }
+    $data['data'] = $this->novel_model->get_chapter_list();
+    $this->load->view('admin/index',$data);
+  }
+
+  public function novel_edit($id = 0)
+  {
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('title', 'Title', 'required');
+
+    $data['novel'] = $this->novel_model->get_novel_ids();
+    $novel = array();
+    if(!empty($data['novel']))
+    {
+      foreach ($data['novel'] as $key => $value)
+      {
+        $novel[$value['id']] = $value['title'];
+      }
+      $data['novel'] = $novel;
+    }
+
+    if ($this->form_validation->run() === FALSE)
+    {
+
+    }else{
+      $data['msg'] = 'Content Saved Failed';
+      $data['alert'] = 'danger';
+      if($id > 0)
+      {
+        $data['msg'] = 'Content Saved Successfully';
+        $data['alert'] = 'success';
+        $this->novel_model->set_chapter($id);
+      }else{
+        $data['msg'] = 'Content Saved Successfully';
+        $data['alert'] = 'success';
+        $this->novel_model->set_chapter();
+      }
+    }
+    // pr($data);
+    $data['data'] = $this->novel_model->get_chapter($id);
+    $this->load->view('admin/index', $data);
   }
 }

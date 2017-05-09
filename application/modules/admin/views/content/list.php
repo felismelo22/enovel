@@ -47,7 +47,7 @@ if(!empty($msg)&&!empty($alert))
 						<tr data-id="<?php echo $value['id'] ?>">
 							<input type="hidden" name="id[]" value="<?php echo $value['id'] ?>">
 							<td><a href="<?php echo base_url('admin/content_edit/'.$value['id']) ?>"><?php echo $value['id'] ?></a></td>
-							<td><img src="<?php echo content_image($value['image'],$value['id']); ?>" data-toggle="modal" data-target="#img_<?php echo $value['id']?>" class="img-thumbnail img-responsive" style="cursor:pointer; object-fit: cover;width: 30px;height: 30px;"></td>
+							<td><img src="<?php echo image_src('novel',$value['image'],$value['id']); ?>" data-toggle="modal" data-target="#img_<?php echo $value['id']?>" class="img-thumbnail img-responsive" style="cursor:pointer; object-fit: cover;width: 30px;height: 30px;"></td>
 							<td><a href="<?php echo base_url('admin/content_edit/'.$value['id']) ?>"><?php echo $value['title'] ?></a></td>
 							<td><?php echo nice_date($value['created'], 'Y/m/d'); ?></td>
 							<td>
@@ -110,7 +110,7 @@ if(!empty($data))
 		        <h4 class="modal-title" id="img_title_<?php echo $value['id']?>"><?php echo $value['image'];?></h4>
 		      </div>
 		      <div class="modal-body" style="text-align: center;">
-		        <img src="<?php echo content_image($value['image'], $value['id']); ?>" data-toggle="modal" data-target="#cat_img_<?php echo $value['id']?>" class="img-thumbnail img-responsive" style="cursor:pointer; object-fit: cover;width: 350px;height: 350px;">
+		        <img src="<?php echo image_src('content',$value['image'], $value['id']); ?>" data-toggle="modal" data-target="#cat_img_<?php echo $value['id']?>" class="img-thumbnail img-responsive" style="cursor:pointer; object-fit: cover;width: 350px;height: 350px;">
 		      </div>
 		      <div class="modal-footer">
 		      </div>

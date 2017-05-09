@@ -50,6 +50,27 @@ function content_image($image='', $id = 0)
 	return $src;
 }
 
+function image_src($module = 'content', $image='', $id = 0)
+{
+	$src = base_url().'images/modules/content/none.gif';
+	$check_path = FCPATH.'images/modules/';
+	if(!empty($id))
+	{
+		$url = base_url().'images/modules/'.$module.'/'.$id.'/';
+		$check_path = $check_path.$module.'/'.$id.'/';
+		if(!empty($image))
+		{
+			$url = $url.$image;
+			$check_path = $check_path.$image;
+			if(file_exists($check_path))
+			{
+				$src = $url;
+			}
+		}
+	}
+	return $src;
+}
+
 function pagination($total_rows = 0,$limit = 0, $url_get = '')
 {
   // $config['base_url']             = base_url('admin/content_list').$url_get;

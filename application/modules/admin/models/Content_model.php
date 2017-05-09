@@ -176,7 +176,7 @@ class Content_model extends CI_Model
 					}
 				}
 			}
-			}
+		}
 	}
 
 	public function set_cat($id = 0)
