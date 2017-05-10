@@ -126,100 +126,79 @@ class Admin extends CI_Controller
     $this->form_validation->set_rules('title', 'Title', 'required');
     if ($this->form_validation->run() === FALSE)
     {
-      $data['msg']           = '';
-      $data['alert']         = '';
-      $data['parent']        = $this->content_model->get_cat_ids();
-      $data['data_cat_list'] = $this->content_model->get_cat_list();
-      $parent                = array();
-
-      foreach ($data['parent'] as $key => $value)
-      {
-        $parent[$value['id']] = $value['title'];
-      }
-      $parent[0] = 'None';
-      $data['parent'] = $parent;
-      if($id != 0)
-      {
-        $data['data_cat']  = $this->content_model->get_cat($id);
-      }
-      $this->load->view('admin/index', $data);
+      $data['msg']       = '';
+      $data['alert']     = '';
     }else{
-      // echo $this->input->post('description');
-      // pr($_POST);die();
-      $title  = $this->input->post('title');
-      $par_id = $this->input->post('par_id');
+      $title       = $this->input->post('title');
+      $par_id      = $this->input->post('par_id');
+      $title_exist = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' LIMIT 1');
+      $title_self  = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' AND id = '.$id.' LIMIT 1');
       if($id > 0)
       {
-        $row = $this->content_model->get_cat_data('WHERE id = '.$id);
-        $cat_row       = $this->content_model->get_cat_data('WHERE par_id = '.$par_id.' AND title = "'.$title.'"');
-
-        if($title != $row['title'])
+        $data['msg']    = 'Title Exist';
+        $data['alert']  = 'danger';
+        if(empty($title_exist))
         {
-          $data['msg']   = 'Failed Saving Data, title exist';
-          $data['alert'] = 'danger';
-
-          if(empty($cat_row))
-          {
-            $data['msg'] = 'Success Saving Data';
-            $data['alert'] = 'success';
-            $this->content_model->set_cat($id);
-          }
+          $this->novel_model->set_cat($id);
+          $data['msg']    = 'Data Updated Successfully';
+          $data['alert']  = 'success';
         }else{
-          $data['msg']   = 'Failed Saving Data, title exist';
-          $data['alert'] = 'danger';
 
-          if(!empty($cat_row))
+          if($title_self)
           {
-            $data['msg'] = 'Success Saving Data';
-            $data['alert'] = 'success';
-            $this->content_model->set_cat($id);
+            $data['msg']    = 'Data Updated Successfully';
+            $data['alert']  = 'success';
+            $this->novel_model->set_cat($id);
           }
         }
-        // $data['data_cat']  = $this->content_model->get_cat($id);
-
-        // $this->content_model->set_user();
       }else{
-
-        $cat_row       = $this->content_model->get_cat_data('WHERE par_id = '.$par_id.' AND title = "'.$title.'"');
-        $data['msg']   = 'Failed Saving Data, title exist';
-        $data['alert'] = 'danger';
-
-        if(empty($cat_row))
+        if(empty($title_exist))
         {
-          $data['msg'] = 'Success Saving Data';
+          $data['msg']   = 'Data Saved Successfully';
           $data['alert'] = 'success';
-          $this->content_model->set_cat();
+          $this->novel_model->set_cat();
+        }else{
+          $data['msg']    = 'Title Exist';
+          $data['alert']  = 'danger';
         }
       }
-
-      $data['parent']        = $this->content_model->get_cat_ids();
-      $data['data_cat_list'] = $this->content_model->get_cat_list();
-      $parent                = array();
-
-      foreach ($data['parent'] as $key => $value)
-      {
-        $parent[$value['id']] = $value['title'];
-      }
-      $parent[0] = 'None';
-      $data['parent'] = $parent;
-
-      if(!empty($_POST['del_cat']))
-      {
-        $this->content_model->del_data('category',$_POST['del_cat']);
-        $data['msg']   = 'data berhasil dihapus';
-        $data['alert'] = 'success';
-      }
-
-      if(!empty($this->input->post('id')))
-      {
-        $this->content_model->update_data('category',$this->input->post('pub_cat'));
-        $data['msg']   = 'data berhasil di update';
-        $data['alert'] = 'success';
-      }
-
-      $this->load->view('admin/index', $data);
     }
+
+    $this->load->helper('date');
+    if(!empty($this->input->post('publish_list')))
+    {
+      $this->admin_model->publish_data('content_cat', $this->input->post('pub_check'));
+      $data['msg']   = 'Novel Updated Successfully';
+      $data['alert'] = 'success';
+    }
+    if(!empty($this->input->post('delete')))
+    {
+      $this->admin_model->del_data('content_cat', $this->input->post('del_check'));
+      $data['msg']   = 'Novel Deleted Successfully';
+      $data['alert'] = 'success';
+      if(empty($this->input->post('del_check')))
+      {
+        $data['msg']   = 'No Data selected to delete';
+        $data['alert'] = 'success';
+      }
+    }
+
+    $data['parent']        = $this->content_model->get_cat_ids();
+    $parent                = array();
+
+    foreach ($data['parent'] as $key => $value)
+    {
+      $parent[$value['id']] = $value['title'];
+    }
+    $parent[0] = 'None';
+    $data['parent'] = $parent;
+
+    $data['data_list'] = $this->content_model->get_cat_list();
+    $data['data']      = $this->content_model->get_cat(@intval($id));
+
+    $this->load->view('admin/index', $data);
   }
+
   public function content_edit($id = 0)
   {
     $this->load->helper('form');
@@ -291,13 +270,13 @@ class Admin extends CI_Controller
     $this->load->helper('date');
     if(!empty($this->input->post('publish')))
     {
-      $this->content_model->publish_data('content', $this->input->post('pub_content'));
+      $this->admin_model->publish_data('content', $this->input->post('pub_content'));
       $data['msg']   = 'Content Updated Successfully';
       $data['alert'] = 'success';
     }
     if(!empty($this->input->post('delete')))
     {
-      $this->content_model->del_data('content', $this->input->post('del_content'));
+      $this->admin_model->del_data('content', $this->input->post('del_content'));
       $data['msg']   = 'Content Deleted Successfully';
       $data['alert'] = 'success';
       if(empty($this->input->post('del_content')))
@@ -317,6 +296,17 @@ class Admin extends CI_Controller
     $this->load->library('form_validation');
 
     $this->form_validation->set_rules('title', 'Title', 'required');
+
+    $data['category'] = $this->novel_model->get_cat_ids();
+    $category = array();
+    $data['category_data'] = $this->novel_model->get_cat_all('id,par_id,title', 'WHERE publish = 1');
+
+    foreach ($data['category'] as $key => $value)
+    {
+      $category[$value['id']] = $value['title'];
+    }
+    $data['category'] = $category;
+
     if ($this->form_validation->run() === FALSE)
     {
       $data['msg']       = '';
@@ -350,23 +340,21 @@ class Admin extends CI_Controller
           $data['alert']  = 'danger';
         }
       }
-
-
     }
 
     $this->load->helper('date');
     if(!empty($this->input->post('publish_list')))
     {
-      $this->content_model->publish_data('novel', $this->input->post('pub_nov'));
+      $this->admin_model->publish_data('novel', $this->input->post('pub_check'));
       $data['msg']   = 'Novel Updated Successfully';
       $data['alert'] = 'success';
     }
     if(!empty($this->input->post('delete')))
     {
-      $this->content_model->del_data('novel', $this->input->post('del_nov'));
+      $this->admin_model->del_data('novel', $this->input->post('del_check'));
       $data['msg']   = 'Novel Deleted Successfully';
       $data['alert'] = 'success';
-      if(empty($this->input->post('del_nov')))
+      if(empty($this->input->post('del_check')))
       {
         $data['msg']   = 'No Data selected to delete';
         $data['alert'] = 'success';
@@ -378,18 +366,99 @@ class Admin extends CI_Controller
 
     $this->load->view('admin/index', $data);
   }
+
+  public function novel_category($id = 0)
+  {
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('title', 'Title', 'required');
+    if ($this->form_validation->run() === FALSE)
+    {
+      $data['msg']       = '';
+      $data['alert']     = '';
+    }else{
+      $title       = $this->input->post('title');
+      $par_id      = $this->input->post('par_id');
+      $title_exist = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' LIMIT 1');
+      $title_self  = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' AND id = '.$id.' LIMIT 1');
+      if($id > 0)
+      {
+        $data['msg']    = 'Title Exist';
+        $data['alert']  = 'danger';
+        if(empty($title_exist))
+        {
+          $this->novel_model->set_cat($id);
+          $data['msg']    = 'Data Updated Successfully';
+          $data['alert']  = 'success';
+        }else{
+
+          if($title_self)
+          {
+            $data['msg']    = 'Data Updated Successfully';
+            $data['alert']  = 'success';
+            $this->novel_model->set_cat($id);
+          }
+        }
+      }else{
+        if(empty($title_exist))
+        {
+          $data['msg']   = 'Data Saved Successfully';
+          $data['alert'] = 'success';
+          $this->novel_model->set_cat();
+        }else{
+          $data['msg']    = 'Title Exist';
+          $data['alert']  = 'danger';
+        }
+      }
+    }
+
+    $this->load->helper('date');
+    if(!empty($this->input->post('publish_list')))
+    {
+      $this->admin_model->publish_data('novel_cat', $this->input->post('pub_check'));
+      $data['msg']   = 'Novel Updated Successfully';
+      $data['alert'] = 'success';
+    }
+    if(!empty($this->input->post('delete')))
+    {
+      $this->admin_model->del_data('novel_cat', $this->input->post('del_check'));
+      $data['msg']   = 'Novel Deleted Successfully';
+      $data['alert'] = 'success';
+      if(empty($this->input->post('del_check')))
+      {
+        $data['msg']   = 'No Data selected to delete';
+        $data['alert'] = 'success';
+      }
+    }
+
+    $data['parent']        = $this->novel_model->get_cat_ids();
+    $parent                = array();
+
+    foreach ($data['parent'] as $key => $value)
+    {
+      $parent[$value['id']] = $value['title'];
+    }
+    $parent[0] = 'None';
+    $data['parent'] = $parent;
+
+    $data['data_list'] = $this->novel_model->get_cat_list();
+    $data['data']      = $this->novel_model->get_cat(@intval($id));
+
+    $this->load->view('admin/index', $data);
+  }
   public function novel_list()
   {
     $this->load->helper('date');
     if(!empty($this->input->post('publish')))
     {
-      $this->content_model->publish_data('novel_chapter', $this->input->post('pub_chapter'));
+      $this->admin_model->publish_data('novel_chapter', $this->input->post('pub_chapter'));
       $data['msg']   = 'Content Updated Successfully';
       $data['alert'] = 'success';
     }
     if(!empty($this->input->post('delete')))
     {
-      $this->content_model->del_data('novel_chapter', $this->input->post('del_chapter'));
+      $this->admin_model->del_data('novel_chapter', $this->input->post('del_chapter'));
       $data['msg']   = 'Content Deleted Successfully';
       $data['alert'] = 'success';
       if(empty($this->input->post('del_chapter')))

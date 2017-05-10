@@ -62,6 +62,10 @@ $route['user/list_edit/(:any)'] = 'user/list_edit/$1';
 $route['user/list/(:any)']      = 'user/list/$1';
 $route['user/check_exist']      = 'user/check_exist';
 
+/*novel*/
+$route['novel'] = 'novel';
+
+
 /*content*/
 $route['content/cat']             = 'content/content_cat';
 $route['content/cat_list/(:any)'] = 'content/cat_list/$1';

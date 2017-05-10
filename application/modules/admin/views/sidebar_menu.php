@@ -34,6 +34,9 @@
 				<a href="<?php echo base_url('admin/novel_novel') ?>">Novel</a>
 			</li>
 			<li>
+				<a href="<?php echo base_url('admin/novel_category') ?>">Category</a>
+			</li>
+			<li>
 				<a href="<?php echo base_url('admin/novel_edit') ?>">Add Chapter</a>
 			</li>
 			<li>

@@ -10,15 +10,7 @@ class Content_model extends CI_Model
 	/*get*/
 	public function get_cat($id = 0)
 	{
-		// if ($username === FALSE || $id ===0)
-		// {
-		// 	$query = $this->db->get('user');
-		// 	// $query = $this->db->get_where('user', '1',2,5);
-		// 	return $query->result_array();
-		// }
-
 		$query = $this->db->get_where('content_cat', array('id' => $id));
-
 		return $query->row_array();
 	}
 
@@ -44,7 +36,7 @@ class Content_model extends CI_Model
 	{
 		$data = array();
     $url_get = base_url('admin/content_category').'';
-		$limit = 3;
+		$limit = 5;
 
     if(!empty($_GET))
     {
@@ -78,11 +70,9 @@ class Content_model extends CI_Model
 		{
 			$sql = ' WHERE id = "'.$keyword.'" OR title LIKE "'.$keyword.'%"';
 		}
-		$query = $this->db->query('SELECT *,CASE WHEN par_id = 0 THEN id ELSE par_id END AS Sort FROM `content_cat` '.@$sql.' ORDER BY sort,id LIMIT '.$page.','.$limit);
-		$data['cat_list'] = $query->result_array();
+		$query = $this->db->query('SELECT * FROM `content_cat` '.@$sql.' ORDER BY id DESC LIMIT '.$page.','.$limit);
+		$data['data_list'] = $query->result_array();
 		return $data;
-		// untuk menampilkan query terakhir
-		// pr($this->db->last_query());die();
 	}
 
 	public function get_content($id = 0)
@@ -154,38 +144,11 @@ class Content_model extends CI_Model
 		// pr($this->db->last_query());die();
 	}
 	/*set*/
-	public function publish_data($table = '', $ids = array(''))
-	{
-		if(!empty($table))
-		{
-			$data_id = $this->input->post('id');
-			if(!empty($data_id))
-			{
-				foreach ($data_id as $key => $id)
-				{
-					if(!empty($ids))
-					{
-						if(in_array($id, $ids))
-						{
-							$this->db->update($table, array('publish'=>1), 'id = '.$id);
-						}else{
-							$this->db->update($table, array('publish'=>0), 'id = '.$id);
-						}
-					}else{
-						$this->db->update($table, array('publish'=>0), 'id = '.$id);
-					}
-				}
-			}
-		}
-	}
 
 	public function set_cat($id = 0)
 	{
 		$this->load->helper('url');
 
-		// $description = trim($this->input->post('description'));
-		// $description = stripslashes($description);
-		// $description = htmlspecialchars($description);
 		$publish = !empty($this->input->post('publish')) ? 1:0;
 		$data = array(
 			'title' => $this->input->post('title'),

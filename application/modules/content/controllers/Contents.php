@@ -14,7 +14,7 @@ class Content extends CI_Controller
 
   public function index()
 	{
-		$this->load->view('admin/index');
+		$this->load->view('home/index');
 	}
 
   public function cat_list($par_id = 0, $page = 0, $keyword = NULL)

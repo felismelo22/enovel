@@ -117,4 +117,44 @@ class Admin_model extends CI_Model
 		}
 		return $query->row_array();
 	}
+
+
+	/*set*/
+	public function publish_data($table = '', $ids = array(''))
+	{
+		if(!empty($table))
+		{
+			$data_id = $this->input->post('id');
+			if(!empty($data_id))
+			{
+				foreach ($data_id as $key => $id)
+				{
+					if(!empty($ids))
+					{
+						if(in_array($id, $ids))
+						{
+							$this->db->update($table, array('publish'=>1), 'id = '.$id);
+						}else{
+							$this->db->update($table, array('publish'=>0), 'id = '.$id);
+						}
+					}else{
+						$this->db->update($table, array('publish'=>0), 'id = '.$id);
+					}
+				}
+			}
+		}
+	}
+
+
+	/*del*/
+	public function del_data($table='',$ids = array())
+	{
+		if(!empty($ids)&&!empty($table))
+		{
+			foreach ($ids as $key => $id)
+			{
+				$this->db->delete($table, array('id'=>$id));
+			}
+		}
+	}
 }

@@ -1,8 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-$id     = !empty($data['id']) ? $data['id'] : '';
-// $data['cat_ids'] = '1,2,5';
-// $data['cat_ids'] = explode(',',$data['cat_ids']);
-$cat_ids = @$data['cat_ids'];
+$id      = !empty($data['id']) ? $data['id'] : '';
+$cat_ids = !empty($data['cat_ids']) ? explode(',', $data['cat_ids']): '';
 $publish = isset($data['publish']) ? $data['publish'] : 1;
 
 $r_cat    = array_path($category_data, 0, '>', '', '--');

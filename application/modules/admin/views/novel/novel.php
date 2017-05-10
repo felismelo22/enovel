@@ -9,10 +9,15 @@ $par_id     = @intval($data['par_id']);
 $publish    = isset($data['publish']) ? $data['publish'] : 1;
 $pagination = $data_list['pagination'];
 $novel_list = $data_list['data_list'];
-pr(@$data);
-pr(@$data_list);
-pr(@$_POST);
-pr(@$_FILES);
+
+$cat_ids = !empty($data['cat_ids']) ? explode(',', $data['cat_ids']): '';
+$r_cat    = array_path($category_data, 0, '>', '', '--');
+$cat_size = count($r_cat);
+if ($cat_size > 10)
+{
+	$cat_size = 10;
+}
+
 ?>
 <div class="col-md-4">
 	<?php echo form_open_multipart(base_url('admin/novel_novel/'.$id), 'id="novel_edit"');?>
@@ -25,6 +30,11 @@ pr(@$_FILES);
 			<div class="panel panel-body">
 				<?php
 				echo form_hidden('id',$id);
+				echo form_label('Cagegory', 'category');
+				?>
+		 		<select name="cat_ids[]" multiple="multiple" id="cat_ids" size="<?php echo $cat_size; ?>" class="form-control">
+					<?php echo createOption($r_cat, $cat_ids);?>
+				</select><?php
 				echo form_label('Title', 'title');
 				echo form_input(array(
 					'name'     => 'title',
@@ -144,14 +154,14 @@ pr(@$_FILES);
 								<td>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" class="pub_check" name="pub_nov[]" value="<?php echo $value['id']; ?>" <?php echo !empty($value['publish']) ? 'checked':''; ?>> Publish
+											<input type="checkbox" class="pub_check" name="pub_check[]" value="<?php echo $value['id']; ?>" <?php echo !empty($value['publish']) ? 'checked':''; ?>> Publish
 										</label>
 									</div>
 								</td>
 								<td>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" class="del_check" name="del_nov[]" value="<?php echo $value['id']; ?>"> <span class="glyphicon glyphicon-trash"></span>
+											<input type="checkbox" class="del_check" name="del_check[]" value="<?php echo $value['id']; ?>"> <span class="glyphicon glyphicon-trash"></span>
 										</label>
 									</div>
 								</td>
@@ -211,7 +221,66 @@ if(!empty($novel_list))
 		</div>
 		<?php
 	}
-}?>
-<!-- <script type="text/javascript">
-	CKEDITOR.replace('textckeditor');
-</script> -->
+}
+/*=====================================================
+ * $data[]	= array(
+ 			'id'			=> $id
+ 		, 'par_id'	=> $par_id
+ 		, 'title'		=> $title);
+ *====================================================*/
+function array_path($data, $par_id = 0, $separate = ' / ', $prefix = '', $load_parent = '')
+{
+	$output = array();
+	foreach((array)$data AS $dt)
+	{
+		if($dt['par_id'] == $par_id)
+		{
+			if(empty($load_parent))
+			{
+				$text = ($par_id==0) ? $prefix.$dt['title'] : $prefix.$separate.$dt['title'];
+				$output[$dt['id']] = $text;
+			}else{
+				$output[$dt['id']] = ($par_id==0) ? $prefix.$dt['title'] : $prefix.$separate.$dt['title'];
+				$text	= ($par_id==0) ? $prefix.$load_parent : $prefix.$separate.$load_parent;
+			}
+			$r = array_path($data, $dt['id'], $separate, $text, $load_parent);
+			if(!empty($r)) {
+				foreach($r AS $i => $j)
+					$output[$i] = $j;
+			}
+		}
+	}
+	return $output;
+}
+function createOption($arr, $select='')
+{
+	$output = '';
+	$valueiskey	= $check_first = false;
+	foreach((array)$arr AS $key => $dt){
+		if(is_array($dt)){
+			list($value, $caption) = array_values($dt);
+			if(empty($caption)) $caption = $value;
+		}else{
+			if(!$check_first) {
+				if((is_numeric($key) && $key != 0)
+				|| (is_string($key) && !is_numeric($key))) {
+					$valueiskey = true;
+				}
+				$check_first = true;
+			}
+			if(empty($dt) && !empty($key)) $dt = $key;
+			$value = $valueiskey ? $key : $dt;
+			$caption = $dt;
+		}
+		if(isset($select)){
+			if(is_array($select)) $selected = (in_array($value, $select)) ? ' selected="selected"':'';
+			else    $selected = ($value==$select) ? ' selected="selected"':'';
+		}else{
+			$selected = '';
+		}
+		$output .= "<option value=\"$value\"$selected>$caption</option>";
+	}
+	return $output;
+}
+
+?>
