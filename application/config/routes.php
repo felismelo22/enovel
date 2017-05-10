@@ -76,5 +76,5 @@ $route['crud/list_edit/(:any)'] = 'crud/list_edit/$1';
 
 /*default*/
 $route['default_controller']      = 'home';
-// $route['404_override']         = '';
+$route['404_override']            = 'home';
 // $route['translate_uri_dashes'] = FALSE;

@@ -5,11 +5,13 @@
 
 	// $content = $mod['name'].'/'.$mod['task'];
 	$content = ($mod['name'] == 'home' && $mod['task'] == 'index') ? 'home/content': $mod['name'].'/'.$mod['task'];
+	if(empty($mod['name']))
+	{
+		$content = 'home/notfound';
+	}
 	$data['content'] = $content;
 	$data['task']    = $mod['task'];
 	$data['module']  = $mod['name'];
 
 	$this->session->__set('link_js','');
-	// pr($mod);
-	// pr($data);die();
 	$this->load->view('home/home',$data);

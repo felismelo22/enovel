@@ -8,13 +8,39 @@
 		<?php $this->load->view('home/top'); ?>
 	</nav>
 	<a name="about"></a>
-	<div class="intro-header">
-		<?php $this->load->view('home/header'); ?>
-	</div>
-	<!-- /.intro-header -->
-
-	<!-- Page Content -->
-
+		<?php
+		if($content == 'home/content')
+		{
+			echo '<div class="intro-header">';
+			$this->load->view('home/header');
+			echo '</div>';
+		}else{
+			echo '<br><br><br>';
+			?>
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="breadcrumb">
+						<li class="active">
+							<i class="fa fa-home"></i><a href="<?php echo base_url('admin'); ?>"> Home</a>
+						</li>
+						<li class="active">
+							<a href="<?php echo base_url($module); ?>"> <?php echo $module ?></a>
+						</li>
+						<?php
+						if($task != 'index')
+						{
+						 ?>
+							<li class="active">
+								<a href="<?php echo base_url($module.'/'.$task); ?>"> <?php echo $task ?></a>
+							</li>
+						 <?php
+						}?>
+					</ol>
+				</div>
+			</div>
+			<?php
+		}
+		?>
 	<a  name="services"></a>
 	<?php
 	$data['msg']    = @$msg;
@@ -23,7 +49,6 @@
 	$data['task']   = @$task;
 	$this->load->view($content, $data);
 	pr(@($this->session));
-	// $this->load->view('home/content');
 	?>
 
 	<a  name="contact"></a>
