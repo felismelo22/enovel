@@ -154,6 +154,8 @@ class Admin_model extends CI_Model
 			foreach ($ids as $key => $id)
 			{
 				$this->db->delete($table, array('id'=>$id));
+				$dir = FCPATH.'images/modules/'.$table.'/'.$id.'/';
+				recursive_rmdir($dir);
 			}
 		}
 	}

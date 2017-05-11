@@ -13,6 +13,23 @@ class Novel extends CI_Controller
 	public function index()
 	{
     $data['novel'] = $this->novel_model->get_novel_list();
-		$this->load->view('home/index',$data);
-	}
+    // pr($this->db->last_query());die();
+    $this->load->view('home/index',$data);
+  }
+  public function last()
+  {
+    $data['novel'] = $this->novel_model->get_novel_popular();
+    $data['chapter'] = $this->novel_model->get_last_chapter();
+    $data['novel_popular'] = $this->novel_model->get_novel_popular_list();
+    // pr($this->db->last_query());die();
+    $this->load->view('home/index',$data);
+  }
+  public function detail($id = 0)
+  {
+    $data['novel'] = $this->novel_model->get_novel($id);
+    $data['last_chapter_list'] = $this->novel_model->get_chapter_novel($id);
+    $data['chapter_list'] = $this->novel_model->get_chapter_list($id);
+    // pr($this->db->last_query());die();
+    $this->load->view('home/index', $data);
+  }
 }

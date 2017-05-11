@@ -3,6 +3,15 @@
 $data = $novel['data_list'];
 ?>
 <div class="row">
+	<div class="col-md-12" style="text-align: center;">
+		<form method="get" action="<?php echo base_url('novel') ?>" class="form-inline">
+			<input type="text" name="keyword" class="form-control" placeholder="keyword" value="<?php echo @$_GET['keyword'] ?>">
+			<button type="submit" class="btn btn-warning"><span class="glyphicon glyphicon-search"></span></button>
+		</form>
+		<hr>
+	</div>
+</div>
+<div class="row">
 	<?php
 	foreach ($data as $key => $value)
 	{
@@ -32,4 +41,7 @@ $data = $novel['data_list'];
 		<?php
 	}
 	?>
+</div>
+<div class="col-md-12" style="text-align: center">
+	<?php echo $novel['pagination'];?>
 </div>

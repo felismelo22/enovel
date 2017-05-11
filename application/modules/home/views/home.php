@@ -9,7 +9,7 @@
 	</nav>
 	<a name="about"></a>
 		<?php
-		if($content == 'home/content')
+		if($content == 'novel/last')
 		{
 			echo '<div class="intro-header">';
 			$this->load->view('home/header');
@@ -48,7 +48,7 @@
 	$data['module'] = @$module;
 	$data['task']   = @$task;
 	$this->load->view($content, $data);
-	pr(@($this->session));
+	// pr(@($this->session));
 	?>
 
 	<a  name="contact"></a>
