@@ -14,4 +14,12 @@
 	$data['module']  = $mod['name'];
 
 	$this->session->__set('link_js','');
+
+	if($content == 'novel/last')
+	{
+		$data['header']        = $header;
+		$data['header_bottom'] = $header_bottom;
+		$data['logo']          = $logo;
+		$data['site']          = $site;
+	}
 	$this->load->view('home/home',$data);

@@ -10,6 +10,7 @@ class Admin extends CI_Controller
     $this->load->helper('email');
     $this->load->model('admin_model');
     $this->load->model('content_model');
+    $this->load->model('config_model');
     $this->load->model('novel_model');
 		$this->load->library('session');
 		$this->load->library('pagination');
@@ -34,7 +35,8 @@ class Admin extends CI_Controller
                       );
         $this->session->set_userdata('logged_in', $user_data);
 
-        redirect(base_url('admin'));
+        // redirect(base_url('admin'));
+        redirect('admin');
       }else{
         $data['msg'] = 'pastikan username dan password anda benar';
         $data['alert'] = 'danger';
@@ -509,5 +511,49 @@ class Admin extends CI_Controller
     // pr($data);
     $data['data'] = $this->novel_model->get_chapter($id);
     $this->load->view('admin/index', $data);
+  }
+
+
+  function config($name = '')
+  {
+    $this->load->helper('form');
+    $this->load->library('form_validation');
+
+    $data['msg']   = '';
+    $data['alert'] = '';
+
+    $this->form_validation->set_rules('title', 'Title', 'required');
+
+    if($this->form_validation->run() === TRUE)
+    {
+      $data['msg']   = 'Config Saved Successfully';
+      $data['alert'] = 'success';
+
+      $this->config_model->set_config($name);
+    }
+
+    $data['config'] = $this->config_model->get_config($name);
+    $this->load->view('admin/index',$data);
+  }
+
+  public function config_header($name = '')
+  {
+    $this->config($name);
+  }
+  public function config_header_bottom($name = '')
+  {
+    $this->config($name);
+  }
+  public function config_logo($name = '')
+  {
+    $this->config($name);
+  }
+  public function config_site($name = '')
+  {
+    $this->config($name);
+  }
+  public function config_menu($name = '')
+  {
+    $this->config($name);
   }
 }

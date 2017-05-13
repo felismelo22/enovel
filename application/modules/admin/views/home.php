@@ -26,9 +26,9 @@
 						$data['alert']  = @$alert;
 						$data['module'] = @$module;
 						$data['task']   = @$task;
-						pr($content);
+						// pr($content);
 						$this->load->view($content, $data);
-						pr(@($this->session));
+						// pr(@($this->session));
 					?>
 				</div>
 			</div>

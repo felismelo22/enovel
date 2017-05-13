@@ -44,4 +44,21 @@
 			</li>
 		</ul>
 	</li>
+	<li>
+		<a href="javascript:;" data-toggle="collapse" data-target="#configuration"><i class="fa fa-fw fa-cog"></i> Configuration <i class="fa fa-fw fa-caret-down"></i></a>
+		<ul id="configuration" class="collapse">
+			<li>
+				<a href="<?php echo base_url('admin/config_header/header') ?>">Header</a>
+			</li>
+			<li>
+				<a href="<?php echo base_url('admin/config_header_bottom/header_bottom') ?>">Header Bottom</a>
+			</li>
+			<li>
+				<a href="<?php echo base_url('admin/config_logo/logo') ?>">Logo</a>
+			</li>
+			<li>
+				<a href="<?php echo base_url('admin/config_site/site') ?>">Site</a>
+			</li>
+		</ul>
+	</li>
 </ul>

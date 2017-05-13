@@ -1,6 +1,4 @@
 <?php
-// pr($novel);
-// pr($chapter);die();
 $data = $novel['data_list'];
 ?>
 <div class="container">
@@ -29,7 +27,7 @@ $data = $novel['data_list'];
 				          </div>
 				        </div>
 				      </div>
-				      <a href="#">
+				      <a href="<?php echo base_url('novel/detail/'.$value['id']).'/'.url_title($value['title']) ?>">
 				        <div class="panel-footer">
 				          <span class="pull-left">View Details</span>
 				          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -52,7 +50,7 @@ $data = $novel['data_list'];
 					?>
 					<h4><?php echo $value['novel_title'] ?></h4>
 					<div class="col-md-8">
-						<a href=""><?php echo $value['title'] ?></a>
+						<a href="<?php echo base_url('novel/chapter/'.$value['id']).'/'.url_title($value['title']) ?>"><?php echo $value['title'] ?></a>
 					</div>
 					<div class="col-md-4">
 						<p><?php echo $value['created'] ?></p>
@@ -69,7 +67,7 @@ $data = $novel['data_list'];
 			foreach ($novel_popular['data_list'] as $key => $value)
 			{
 				echo '<hr>';
-				echo '<h5><a href="">'.$value['title'].'</a></h5>';
+				echo '<h5><a href="'.base_url('novel/detail/'.$value['id']).'/'.url_title($value['title']).'">'.$value['title'].'</a></h5>';
 			}
 			?>
 			<hr>

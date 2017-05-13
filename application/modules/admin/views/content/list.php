@@ -6,7 +6,7 @@
 <hr>
 <div class="clearfix"></div>
 <?php
-pr($_POST);
+// pr($_POST);
 if(!empty($msg)&&!empty($alert))
 {
 	msg($msg,$alert);

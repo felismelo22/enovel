@@ -270,7 +270,6 @@ class Novel_model extends CI_Model
 		{
 			if($this->db->update('novel', $data, 'id = '.$id))
 			{
-				pr($_FILES);
 				if(!empty($_FILES['image']['name']))
 				{
 					$image = $this->input->post('title').'_'.$id.'.jpg';

@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="esoftgreat, buat web murah dan mudah">
 <meta name="author" content="iwan@esoftgreat.com">
-<title>SIS</title>
+<title>novel</title>
 <link href="<?php echo base_url().'templates/admin/'; ?>css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url().'templates/admin/'; ?>css/sb-admin.css" rel="stylesheet">
 <link href="<?php echo base_url().'templates/admin/'; ?>css/plugins/morris.css" rel="stylesheet">

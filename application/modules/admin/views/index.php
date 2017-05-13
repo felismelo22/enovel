@@ -21,5 +21,4 @@ if(!empty(@$this->session->userdata['logged_in']))
 	$this->load->view('admin/home',$data);
 }else{
 	$this->load->view('user/login');
-	// redirect(base_url('user/login'));
 }

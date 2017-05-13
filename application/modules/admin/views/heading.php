@@ -5,7 +5,7 @@ $mod['task'] = $this->router->fetch_method();
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Esoftgreat <small>Admin Panel</small>
+			<small>Admin Panel</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li class="active">

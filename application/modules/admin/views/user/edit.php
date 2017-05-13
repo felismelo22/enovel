@@ -13,7 +13,7 @@ if(!empty($data_user))
 }
 if(!empty($data_user))
 {
-	pr($data_user);
+	// pr($data_user);
 }
 $id = !empty(@intval($data_user['id'])) ? $data_user['id']: '';
 $validate_error = validation_errors();

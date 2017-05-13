@@ -15,8 +15,8 @@ if(!empty($msg)&&!empty($alert))
 }
 // pr(@$_FILES);
 // pr($_FILES['image']['name']);
-pr(@$this->input->post());
-pr($data);
+// pr(@$this->input->post());
+// pr($data);
 $this->session->__set('link_js', base_url().'templates/admin/js/bootstrap-tagsinput.js');
 ?>
 <?php echo form_open_multipart(base_url('admin/content_edit/'.$id), 'id="cat_edit"');?>

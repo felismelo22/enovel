@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<?php $this->load->view('home/meta'); ?>
+	<?php
+	$data['site'] = @$site;
+	$this->load->view('home/meta', $data);
+	?>
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-		<?php $this->load->view('home/top'); ?>
+		<?php
+		$data['logo'] = @$logo;
+	 	$this->load->view('home/top', $data);
+		?>
 	</nav>
 	<a name="about"></a>
 		<?php
 		if($content == 'novel/last')
 		{
+			$data['header'] = $header;
 			echo '<div class="intro-header">';
-			$this->load->view('home/header');
+			$this->load->view('home/header', $data);
 			echo '</div>';
 		}else{
 			echo '<br><br><br>';
@@ -21,7 +28,7 @@
 				<div class="col-lg-12">
 					<ol class="breadcrumb">
 						<li class="active">
-							<i class="fa fa-home"></i><a href="<?php echo base_url('admin'); ?>"> Home</a>
+							<i class="fa fa-home"></i><a href="<?php echo base_url(); ?>"> Home</a>
 						</li>
 						<li class="active">
 							<a href="<?php echo base_url($module); ?>"> <?php echo $module ?></a>
@@ -31,7 +38,7 @@
 						{
 						 ?>
 							<li class="active">
-								<a href="<?php echo base_url($module.'/'.$task); ?>"> <?php echo $task ?></a>
+								<a href="<?php echo current_url(); ?>"> <?php echo $task ?></a>
 							</li>
 						 <?php
 						}?>
@@ -41,7 +48,7 @@
 			<?php
 		}
 		?>
-	<a  name="services"></a>
+	<a  name="popular"></a>
 	<?php
 	$data['msg']    = @$msg;
 	$data['alert']  = @$alert;
@@ -52,11 +59,18 @@
 	?>
 
 	<a  name="contact"></a>
-	<div class="banner">
-		<?php $this->load->view('home/bottom'); ?>
-	</div>
+	<?php
+	// if($content == 'novel/last')
+	// {
+		$data['header_bottom'] = $header_bottom;
+	 	$this->load->view('home/bottom', $data);
+	// }
+ 	?>
 	<footer>
-		<?php $this->load->view('home/footer'); ?>
+		<?php
+		$data['site'] = @$site;
+		$this->load->view('home/footer', $data);
+		?>
 	</footer>
 
 	<!-- jQuery -->
@@ -64,7 +78,13 @@
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="<?php echo base_url().'templates/admin/'; ?>js/bootstrap.min.js"></script>
-
+	<?php
+	$link_js = @$this->session->userdata('link_js');
+	if(!empty($link_js))
+	{
+		echo '<script src="'.$link_js.'"></script>';
+	}
+	?>
 </body>
 
 </html>

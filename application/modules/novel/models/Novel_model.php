@@ -96,6 +96,17 @@ class Novel_model extends CI_Model
 		return $data;
 	}
 
+	public function get_chapter($id = 0)
+	{
+		$query = $this->db->get_where('novel_chapter',array(
+				'publish' => 1,
+				'id' => $id
+			));
+		$data = $query->row_array();
+		return $data;
+
+	}
+
 	public function get_chapter_list($id)
 	{
 		$this->db->order_by('id','DESC');
@@ -113,5 +124,14 @@ class Novel_model extends CI_Model
 		$query = $this->db->get_where('novel', array('id'=>$id));
 		$data = $query->row_array();
 		return $data;
+	}
+
+	public function set_novel($id)
+	{
+		$this->db->update('novel', $this->input->post(), 'id = '.$id);
+	}
+	public function set_chapter($id)
+	{
+		$this->db->update('novel_chapter', $this->input->post(), 'id = '.$id);
 	}
 }

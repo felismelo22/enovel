@@ -7,6 +7,7 @@ $statuses = array('Coming Soon','On Going','End');
 			<div class="col-md-12">
 				<div class="col-md-12">
 					<h2><?php echo $novel['title'] ?></h2>
+					<a href="<?php echo base_url('novel/novel_edit/'.$novel['id']) ?>" title="edit this novel" class="edit_novel"><span><i class="fa fa-pencil"></i></span></a>
 				</div>
 				<div class="col-md-3" style="padding-right: 5px; text-align: center;">
 					<img src="<?php echo image_src('novel',$novel['image'],$novel['id']); ?>" class="img-thumbnail img-responsive">
@@ -30,7 +31,7 @@ $statuses = array('Coming Soon','On Going','End');
 					{
 						?>
 						<div class="col-md-8">
-							<a href=""><?php echo $value['title'] ?></a>
+							<a href="<?php echo base_url('novel/chapter/'.$value['id']).'/'.url_title($value['title']) ?>"><?php echo $value['title'] ?></a>
 						</div>
 						<div class="col-md-4">
 							<p><?php echo $value['created'] ?></p>
@@ -45,7 +46,7 @@ $statuses = array('Coming Soon','On Going','End');
 						foreach ($chapter_list as $key => $value)
 						{
 							?>
-							<h5><a href=""><?php echo $value['title'] ?></a></h5>
+							<h5><a href="<?php echo base_url('novel/chapter/'.$value['id']).'/'.url_title($value['title']) ?>"><?php echo $value['title'] ?></a></h5>
 							<?php
 						}
 						?>
