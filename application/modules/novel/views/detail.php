@@ -7,7 +7,14 @@ $statuses = array('Coming Soon','On Going','End');
 			<div class="col-md-12">
 				<div class="col-md-12">
 					<h2><?php echo $novel['title'] ?></h2>
-					<a href="<?php echo base_url('novel/novel_edit/'.$novel['id']) ?>" title="edit this novel" class="edit_novel"><span><i class="fa fa-pencil"></i></span></a>
+					<?php
+					if(!empty($novel['editable']))
+					{
+						?>
+						<a href="<?php echo base_url('novel/novel_edit/'.$novel['id']) ?>" title="edit this novel" class="edit_novel"><span><i class="fa fa-pencil"></i></span></a>
+						<?php
+					}
+					?>
 				</div>
 				<div class="col-md-3" style="padding-right: 5px; text-align: center;">
 					<img src="<?php echo image_src('novel',$novel['image'],$novel['id']); ?>" class="img-thumbnail img-responsive">
@@ -21,6 +28,15 @@ $statuses = array('Coming Soon','On Going','End');
 					<hr>
 					<span>Status : </span><span><?php echo $statuses[$novel['status']] ?></span>
 				</div>
+				<?php
+				// if(!empty($category))
+				// {
+				// 	foreach ($category as $key => $value)
+				// 	{
+				// 		echo '<a href="">'.$value['title'].'</a> ';
+				// 	}
+				// }
+				?>
 				<div class="clearfix"></div>
 				<hr>
 				<div class="clearfix"></div>

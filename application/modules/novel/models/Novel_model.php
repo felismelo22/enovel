@@ -126,6 +126,27 @@ class Novel_model extends CI_Model
 		return $data;
 	}
 
+	public function get_novel_cat($ids = '')
+	{
+		if(!empty($ids))
+		{
+			$query = $this->db->query('SELECT id , title FROM novel_cat WHERE id IN('.$ids.')');
+			$data = $query->result_array();
+			return $data;
+		}
+	}
+
+	public function get_novel_by_cat($id = 0)
+	{
+		if(!empty($id))
+		{
+			$query = $this->db->query('SELECT * FROM novel WHERE cat_ids LIKE "%'.$id.'%"');
+			$data = $query->result_array();
+			return $data;
+		}
+
+	}
+
 	public function set_novel($id)
 	{
 		$this->db->update('novel', $this->input->post(), 'id = '.$id);

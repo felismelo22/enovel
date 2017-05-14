@@ -11,13 +11,21 @@ class Novel extends CI_Controller
     $this->load->model('config_model');
     $this->load->library('pagination');
   }
-	public function index()
-	{
 
+  function get_home()
+  {
     $data['header']        = $this->config_model->get_config('header');
     $data['header_bottom'] = $this->config_model->get_config('header_bottom');
     $data['logo']          = $this->config_model->get_config('logo');
     $data['site']          = $this->config_model->get_config('site');
+
+    return $data;
+  }
+
+	public function index()
+	{
+
+    $data = $this->get_home();
 
     $data['novel'] = $this->novel_model->get_novel_list();
     // pr($this->db->last_query());die();
@@ -25,41 +33,58 @@ class Novel extends CI_Controller
   }
   public function last()
   {
+    $data = $this->get_home();
     $data['novel']         = $this->novel_model->get_novel_popular();
     $data['chapter']       = $this->novel_model->get_last_chapter();
     $data['novel_popular'] = $this->novel_model->get_novel_popular_list();
-    $data['header']        = $this->config_model->get_config('header');
-    $data['header_bottom'] = $this->config_model->get_config('header_bottom');
-    $data['logo']          = $this->config_model->get_config('logo');
-    $data['site']          = $this->config_model->get_config('site');
+
+    // die();
 
     $this->load->view('home/index',$data);
   }
   public function detail($id = 0)
   {
+    $data = $this->get_home();
+
     $data['novel'] = $this->novel_model->get_novel($id);
     $data['last_chapter_list'] = $this->novel_model->get_chapter_novel($id);
     $data['chapter_list'] = $this->novel_model->get_chapter_list($id);
 
-    $data['header']        = $this->config_model->get_config('header');
-    $data['header_bottom'] = $this->config_model->get_config('header_bottom');
-    $data['logo']          = $this->config_model->get_config('logo');
-    $data['site']          = $this->config_model->get_config('site');
+    $cat_ids = array();
+    if(!empty($data['novel']['cat_ids']))
+    {
+      $cat_ids = $data['novel']['cat_ids'];
+      // $cat_ids = explode(',',$cat_ids);
+    }
+    if(!empty($cat_ids))
+    {
+      $data['category'] = $this->novel_model->get_novel_cat($cat_ids);
+    }
     // pr($this->db->last_query());die();
     $this->load->view('home/index', $data);
   }
   public function chapter($id = 0)
   {
+    $data = $this->get_home();
+
     $data['chapter'] = $this->novel_model->get_chapter($id);
 
-    $data['header']        = $this->config_model->get_config('header');
-    $data['header_bottom'] = $this->config_model->get_config('header_bottom');
-    $data['logo']          = $this->config_model->get_config('logo');
-    $data['site']          = $this->config_model->get_config('site');
 
     $this->load->view('home/index', $data);
   }
 
+
+  public function category($id = 0)
+  {
+    $data = $this->get_home();
+    if(!empty($id))
+    {
+      $data['novel_list'] = $this->novel_model->get_novel_by_cat($id);
+    }
+    pr($this->db->last_query());
+    pr($data);die();
+    $this->load->view('home/index', $data);
+  }
 
   public function novel_edit($id = 0)
   {
@@ -78,14 +103,12 @@ class Novel extends CI_Controller
       }
     }
 
+    $data = $this->get_home();
+
     $data['novel'] = $this->novel_model->get_novel($id);
     $data['last_chapter_list'] = $this->novel_model->get_chapter_novel($id);
     $data['chapter_list'] = $this->novel_model->get_chapter_list($id);
 
-    $data['header']        = $this->config_model->get_config('header');
-    $data['header_bottom'] = $this->config_model->get_config('header_bottom');
-    $data['logo']          = $this->config_model->get_config('logo');
-    $data['site']          = $this->config_model->get_config('site');
     // pr($this->db->last_query());die();
     $this->load->view('home/index', $data);
   }
@@ -96,6 +119,7 @@ class Novel extends CI_Controller
     $this->load->library('form_validation');
 
     $this->form_validation->set_rules('content', 'Content', 'required');
+    $data = $this->get_home();
 
     if(!empty($id))
     {
@@ -109,10 +133,6 @@ class Novel extends CI_Controller
 
     $data['chapter'] = $this->novel_model->get_chapter($id);
 
-    $data['header']        = $this->config_model->get_config('header');
-    $data['header_bottom'] = $this->config_model->get_config('header_bottom');
-    $data['logo']          = $this->config_model->get_config('logo');
-    $data['site']          = $this->config_model->get_config('site');
 
     // pr($this->db->last_query());die();
     $this->load->view('home/index', $data);

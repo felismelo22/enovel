@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 $id      = !empty($data['id']) ? $data['id'] : '';
 $publish = isset($data['publish']) ? $data['publish'] : 1;
+$editable = isset($data['editable']) ? $data['editable'] : 0;
 
 if(!empty($msg)&&!empty($alert))
 {
@@ -53,6 +54,17 @@ $this->session->__set('link_js', base_url().'templates/admin/js/bootstrap-tagsin
 				'value'=> 'publish',
 				'checked' => $publish
 				)).' Published';
+			echo '</label>';
+			echo '</div>';
+
+			echo form_label('Editable', 'editable');
+			echo '<div class="checkbox">';
+			echo '<label>';
+			echo form_checkbox(array(
+				'name' => 'editable',
+				'value'=> 'editable',
+				'checked' => $editable
+				)).' Editable';
 			echo '</label>';
 			echo '</div>';
 			?>

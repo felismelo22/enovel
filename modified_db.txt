@@ -1,0 +1,1 @@
+ALTER TABLE `novel_chapter` ADD `editable` TINYINT(1) NOT NULL DEFAULT '0' AFTER `content`;

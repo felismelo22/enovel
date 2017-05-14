@@ -249,6 +249,7 @@ class Novel_model extends CI_Model
 		$this->load->helper('url');
 
 		$publish = !empty($this->input->post('publish')) ? 1:0;
+		$editable = !empty($this->input->post('editable')) ? 1:0;
 		$cat_ids = $this->input->post('cat_ids');
 		if(!empty($cat_ids))
 		{
@@ -264,7 +265,8 @@ class Novel_model extends CI_Model
 			'status' => $this->input->post('status'),
 			'country' => $this->input->post('country'),
 			'description' => $this->input->post('description'),
-			'publish' => $publish
+			'publish' => $publish,
+			'editable' => $editable
 		);
 		if($id > 0)
 		{
@@ -319,11 +321,13 @@ class Novel_model extends CI_Model
 	{
 		$this->load->helper('url');
 		$publish = !empty($this->input->post('publish')) ? 1:0;
+		$editable = !empty($this->input->post('editable')) ? 1:0;
 		$data = array(
 			'title' => $this->input->post('title'),
 			'novel_id' => $this->input->post('novel_id'),
 	    'content' => $this->input->post('content'),
 	    'publish' => $publish,
+	    'editable' => $editable
 			);
 		if($id > 0)
 		{

@@ -7,6 +7,7 @@ if(!empty($msg)&&!empty($alert))
 $id         = !empty(@intval($data['id'])) ? $data['id'] : '';
 $par_id     = @intval($data['par_id']);
 $publish    = isset($data['publish']) ? $data['publish'] : 1;
+$editable   = isset($data['editable']) ? $data['editable'] : 0;
 $pagination = $data_list['pagination'];
 $novel_list = $data_list['data_list'];
 
@@ -84,6 +85,17 @@ if ($cat_size > 10)
 					'value'=> 'publish',
 					'checked' => $publish
 					)).' Published';
+				echo '</label>';
+				echo '</div>';
+
+				echo form_label('Editable', 'editable');
+				echo '<div class="checkbox">';
+				echo '<label>';
+				echo form_checkbox(array(
+					'name' => 'editable',
+					'value'=> 'editable',
+					'checked' => $editable
+					)).' Editable';
 				echo '</label>';
 				echo '</div>';
 				?>
