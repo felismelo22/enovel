@@ -5,9 +5,9 @@
 	<li>
 		<a href="javascript:;" data-toggle="collapse" data-target="#user"><i class="fa fa-fw fa-user"></i> User <i class="fa fa-fw fa-caret-down"></i></a>
 		<ul id="user" class="collapse">
-			<li>
+			<!-- <li>
 				<a href="<?php echo base_url('admin/user_list') ?>">User List</a>
-			</li>
+			</li> -->
 			<li>
 				<a href="<?php echo base_url('admin/user_edit') ?>">User Add</a>
 			</li>

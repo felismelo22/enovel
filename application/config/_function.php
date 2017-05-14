@@ -129,5 +129,8 @@ function recursive_rmdir($directory)
             unlink($file);
         }
     }
-    rmdir($directory);
+    if(is_dir($directory))
+    {
+    	rmdir($directory);
+    }
 }

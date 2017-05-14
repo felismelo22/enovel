@@ -133,15 +133,15 @@ class Admin extends CI_Controller
     }else{
       $title       = $this->input->post('title');
       $par_id      = $this->input->post('par_id');
-      $title_exist = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' LIMIT 1');
-      $title_self  = $this->novel_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' AND id = '.$id.' LIMIT 1');
+      $title_exist = $this->content_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' LIMIT 1');
+      $title_self  = $this->content_model->get_cat_data(' WHERE title = "'.$title.'" AND par_id = '.$par_id.' AND id = '.$id.' LIMIT 1');
       if($id > 0)
       {
         $data['msg']    = 'Title Exist';
         $data['alert']  = 'danger';
         if(empty($title_exist))
         {
-          $this->novel_model->set_cat($id);
+          $this->content_model->set_cat($id);
           $data['msg']    = 'Data Updated Successfully';
           $data['alert']  = 'success';
         }else{
@@ -150,7 +150,7 @@ class Admin extends CI_Controller
           {
             $data['msg']    = 'Data Updated Successfully';
             $data['alert']  = 'success';
-            $this->novel_model->set_cat($id);
+            $this->content_model->set_cat($id);
           }
         }
       }else{
@@ -158,7 +158,7 @@ class Admin extends CI_Controller
         {
           $data['msg']   = 'Data Saved Successfully';
           $data['alert'] = 'success';
-          $this->novel_model->set_cat();
+          $this->content_model->set_cat();
         }else{
           $data['msg']    = 'Title Exist';
           $data['alert']  = 'danger';
@@ -170,13 +170,13 @@ class Admin extends CI_Controller
     if(!empty($this->input->post('publish_list')))
     {
       $this->admin_model->publish_data('content_cat', $this->input->post('pub_check'));
-      $data['msg']   = 'Novel Updated Successfully';
+      $data['msg']   = 'Category Updated Successfully';
       $data['alert'] = 'success';
     }
     if(!empty($this->input->post('delete')))
     {
       $this->admin_model->del_data('content_cat', $this->input->post('del_check'));
-      $data['msg']   = 'Novel Deleted Successfully';
+      $data['msg']   = 'Category Deleted Successfully';
       $data['alert'] = 'success';
       if(empty($this->input->post('del_check')))
       {
