@@ -1,5 +1,6 @@
 <?php
 $data = $novel['data_list'];
+
 ?>
 <div class="container">
 	<div class="row">
@@ -45,17 +46,23 @@ $data = $novel['data_list'];
 				<h3>Terjemahan Terbaru</h3>
 				<hr>
 				<?php
-				foreach ($chapter['data_list'] as $key => $value)
+				if(!empty($chapter['data_list']))
 				{
-					?>
-					<h4><?php echo $value['novel_title'] ?></h4>
-					<div class="col-md-8">
-						<a href="<?php echo base_url('novel/chapter/'.$value['id']).'/'.url_title($value['title']) ?>"><?php echo $value['title'] ?></a>
-					</div>
-					<div class="col-md-4">
-						<p><?php echo $value['created'] ?></p>
-					</div>
-					<?php
+					foreach ($chapter['data_list'] as $key)
+					{
+						?><h4><?php echo $value['title'] ?></h4><?php
+						foreach ($key['chapter_list'] as $keys => $value)
+						{
+							?>
+							<div class="col-md-8">
+								<a href="<?php echo base_url('novel/chapter/'.$value['id']).'/'.url_title($value['title']) ?>"><?php echo $value['title'] ?></a>
+							</div>
+							<div class="col-md-4">
+								<p><?php echo $value['created'] ?></p>
+							</div>
+							<?php
+						}
+					}
 				}
 				?>
 			</div>

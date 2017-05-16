@@ -254,10 +254,10 @@ class Novel_model extends CI_Model
 		if(!empty($cat_ids))
 		{
 			$cat_ids = implode(',', $cat_ids);
+			$cat_ids = ','.$cat_ids.',';
 		}else{
 			$cat_ids = '';
 		}
-
 		$data = array(
 			'title' => $this->input->post('title'),
 			'cat_ids' => $cat_ids,

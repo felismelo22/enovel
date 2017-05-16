@@ -73,15 +73,43 @@ class Novel_model extends CI_Model
 	}
 	public function get_last_chapter()
 	{
-		$this->db->order_by('novel_chapter.id','DESC');
-		$this->db->join('novel', 'novel.id = novel_chapter.novel_id', 'left');
-		$this->db->group_by('novel_chapter.novel_id');
-		$this->db->select('novel_chapter.*, novel.title AS novel_title');
-		$query = $this->db->get_where('novel_chapter',array(
-				'novel.publish'=>1,
-			),20);
-		$data['data_list'] = $query->result_array();
-		return $data;
+		// $this->db->order_by('novel_chapter.id','DESC');
+		// $this->db->join('novel', 'novel.id = novel_chapter.novel_id', 'left');
+		// $this->db->group_by('novel_chapter.novel_id');
+		// $this->db->select('novel_chapter.*, novel.title AS novel_title');
+		// $query = $this->db->get_where('novel_chapter',array(
+		// 		'novel.publish'=>1,
+		// 	),20);
+		// $data['data_list'] = $query->result_array();
+		// $data['query'] = $this->db->last_query();
+		$query = $this->db->query('SELECT novel_id FROM novel_chapter GROUP BY novel_id LIMIT 10');
+		$novel_ids = $query->result_array();
+		$data = array();
+		$novel_ids_p = array();
+		if(!empty($novel_ids))
+		{
+			foreach ($novel_ids as $key => $value)
+			{
+				$this->db->select('id,title');
+				$query = $this->db->get_where('novel', array('id'=>$value['novel_id'],'publish'=>1));
+				$novel_ids_p[] = $query->row_array();
+			}
+			if(!empty($novel_ids_p))
+			{
+				$i = 0;
+				foreach ($novel_ids_p as $key => $value)
+				{
+					$this->db->select('id,title,novel_id,created');
+					$this->db->order_by('id', 'DESC');
+					$query = $this->db->get_where('novel_chapter', array('novel_id'=>$value['id']), 2);
+					$data['data_list'][$i]['novel_id'] = $value['id'];
+					$data['data_list'][$i]['title'] = $value['title'];
+					$data['data_list'][$i]['chapter_list'] = $query->result_array();
+					$i++;
+				}
+			}
+			return $data;
+		}
 	}
 
 	public function get_chapter_novel($id = 0)

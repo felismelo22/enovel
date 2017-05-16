@@ -37,9 +37,7 @@ class Novel extends CI_Controller
     $data['novel']         = $this->novel_model->get_novel_popular();
     $data['chapter']       = $this->novel_model->get_last_chapter();
     $data['novel_popular'] = $this->novel_model->get_novel_popular_list();
-
-    // die();
-
+    // pr($data['chapter']);die();
     $this->load->view('home/index',$data);
   }
   public function detail($id = 0)
