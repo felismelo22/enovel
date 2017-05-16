@@ -1,5 +1,7 @@
 <?php
-// pr($chapter);
+// pr($next);
+// pr($previous);
+// pr($chapter);die();
 ?>
 <?php
 if(!empty($chapter))
@@ -20,6 +22,30 @@ if(!empty($chapter))
 				<span><?php echo $chapter['created'] ?></span>
 				<p>
 					<?php echo $chapter['content'] ?>
+				</p>
+				<p style="text-align:center">
+					<span style="font-family:Comic Sans MS,cursive">
+						<span style="font-size:16px">
+							<strong>
+								<?php
+								if(!empty($previous))
+								{
+									?>
+									<a href="<?php echo base_url('novel/chapter/'.$previous['id'].'/'.url_title($previous['title'])) ?>">Previous Chapter</a> &nbsp;
+									<?php
+								}?>
+								<a href="<?php echo base_url('novel/detail/'.$chapter['novel_id']) ?>">Chapter List</a> &nbsp;
+								<?php
+								if(!empty($next))
+								{
+									?>
+									<a href="<?php echo base_url('novel/chapter/'.$next['id'].'/'.url_title($next['title'])) ?>">Next Chapter</a> &nbsp;
+									<?php
+								}
+								?>
+							</strong>
+						</span>
+					</span>
 				</p>
 			</div>
 			<div class="col-md-4">

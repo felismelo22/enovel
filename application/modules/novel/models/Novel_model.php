@@ -135,6 +135,20 @@ class Novel_model extends CI_Model
 
 	}
 
+	public function get_next_chapter($id = 0, $novel_id = 0)
+	{
+		$query = $this->db->query('SELECT `id`,`title` FROM `novel_chapter` WHERE id = (SELECT MIN(id) FROM `novel_chapter` WHERE id > '.$id.' AND novel_id = '.$novel_id.')');
+		$data = $query->row_array();
+		return $data;
+	}
+
+	public function get_previous_chapter($id = 0, $novel_id = 0)
+	{
+		$query = $this->db->query('SELECT `id`,`title` FROM `novel_chapter` WHERE id = (SELECT MAX(id) FROM `novel_chapter` WHERE id < '.$id.' AND novel_id = '.$novel_id.')');
+		$data = $query->row_array();
+		return $data;
+	}
+
 	public function get_chapter_list($id)
 	{
 		$this->db->order_by('id','DESC');

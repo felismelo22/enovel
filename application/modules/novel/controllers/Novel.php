@@ -65,8 +65,12 @@ class Novel extends CI_Controller
   {
     $data = $this->get_home();
 
-    $data['chapter'] = $this->novel_model->get_chapter($id);
-
+    $data['chapter']  = $this->novel_model->get_chapter($id);
+    if(!empty($data['chapter']))
+    {
+      $data['next']     = $this->novel_model->get_next_chapter($id, $data['chapter']['novel_id']);
+      $data['previous'] = $this->novel_model->get_previous_chapter($id, $data['chapter']['novel_id']);
+    }
 
     $this->load->view('home/index', $data);
   }
