@@ -79,8 +79,15 @@
 	$data['task']   = @$task;
 	$this->load->view($content, $data);
 	// pr(@($this->session));
+	if($content == 'novel/last')
+	{
+		?>
+		<div class="chatbox" style="position: fixed;top: 11%; z-index: 99999;">
+			<script async="" data-cfasync="false" id="cid0020000151094912792" src="//st.chatango.com/js/gz/emb.js" style="height: 300px; width: 200px;">{"handle":"noveltamfan","arch":"js","styles":{"a":"000099","b":89,"c":"ffffff","d":"e0e0e0","e":"ffffff","f":20,"g":"ffffff","i":32,"k":"3333ff","l":"3333ff","m":"3333ff","p":"10","q":"000000","r":89,"usricon":0.65,"sbc":"66ffff","fwtickm":1}}</script>
+		</div>
+		<?php
+	}
 	?>
-
 	<a  name="contact"></a>
 	<?php
 	// if($content == 'novel/last')

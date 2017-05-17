@@ -50,7 +50,7 @@ $data = $novel['data_list'];
 				{
 					foreach ($chapter['data_list'] as $key)
 					{
-						?><h4><?php echo $value['title'] ?></h4><?php
+						?><h4><?php echo $key['title'] ?></h4><?php
 						foreach ($key['chapter_list'] as $keys => $value)
 						{
 							?>
@@ -80,6 +80,12 @@ $data = $novel['data_list'];
 			<hr>
 			<h5><a href="<?php echo base_url('novel') ?>">Selengkapnya</a></h5>
 			<hr>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<input type="hidden" name="hosted_button_id" value="HKMLTFSUSU3BW">
+				<input type="image" src="https://www.paypalobjects.com/id_ID/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypalobjects.com/id_ID/i/scr/pixel.gif" width="1" height="1">
+			</form>
 		</div>
 	</div>
 </div>

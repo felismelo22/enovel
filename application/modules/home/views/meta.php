@@ -5,8 +5,8 @@ $site_value = json_decode($site_value,1);
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="bikin web murah dan mudah">
-<meta name="keywords" content="web, website, jual, beli, murah, bagus, kerjasama, jepara">
+<meta name="description" content="<?php echo $site_value['description'] ?>">
+<meta name="keywords" content="<?php echo $site_value['keyword'] ?>">
 <meta name="developer" content="esoftgreat.com">
 <meta name="author" content="esoftgreat">
 <meta name="ROBOTS" content="all, index, follow">
